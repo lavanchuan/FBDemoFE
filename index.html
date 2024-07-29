@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Demo</title>
-</head>
+
+<head></head>
+
 <body>
-    <h1>Welcome to Facebook Demo Application</h1>
-    <label for="txtName">Name:</label>
-    <input type="text" name="txtName" id="txtName">
-    <button onclick="hello()">Hello</button>
+
+    <h2>Add Facebook Login to your webpage</h2>
+
+    <p id="profile"></p>
 
     <script>
-        hello = () =>{
-            let name = document.querySelector("#txtName").value;
-            if(name !== "") alert(`Hello ${name}.`);
-            else alert("Name is empty !!!");
-        }
 
-        
+        <!-- Add the Facebook SDK for Javascript -->
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk')
+        );
+
+
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '{your-facebook-app-id}',
+                xfbml: true,
+                version: '{the-graph-api-version-for-your-app}'
+            });
+            FB.login(function (response) {
+                if (response.authResponse) {
+                    console.log('Welcome!  Fetching your information.... ');
+                    FB.api('/me', { fields: 'name, email' }, function (response) {
+                        document.getElementById("profile").innerHTML = "Good to see you, " + response.name + ". i see your email address is " + response.email
+                    });
+                } else {
+                    console.log('User cancelled login or did not fully authorize.');
+                }
+            });
+        };
+
     </script>
+
 </body>
+
 </html>
