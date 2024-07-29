@@ -9,7 +9,14 @@
 
     <p id="profile"></p>
 
+    <div class="info">
+        <h1>Info</h1>
+        <div class="info-log"></div>
+    </div>
+
     <script>
+
+        let infoLog = document.querySelector(".info-log");
 
         <!-- Add the Facebook SDK for Javascript -->
 
@@ -27,16 +34,19 @@
             FB.init({
                 appId: '{your-facebook-app-id}',
                 xfbml: true,
-                version: '{the-graph-api-version-for-your-app}'
+                version: '20.0'
             });
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
+                    infoLog.textContent += 'Welcome!  Fetching your information.... .<br/>';
+                    
                     FB.api('/me', { fields: 'name, email' }, function (response) {
                         document.getElementById("profile").innerHTML = "Good to see you, " + response.name + ". i see your email address is " + response.email
                     });
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
+                    infoLog.textContent += 'User cancelled login or did not fully authorize.<br>';
                 }
             });
         };
